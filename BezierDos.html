@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <style>
+    svg {
+        border: 1px solid black;
+        width: 100vw;
+        height: 100vh;
+    }
+  </style>
+  <body>
+    <svg>
+      <path d="M10,10 Q590,590 900,100" />
+    </svg>
+    <script>
+      let curve = document.querySelector("path");
+      let point = { x: 500, y: 500 };
+
+      function updateCurve(x, y) {
+        if (x && y) {
+          point.x = x;
+          point.y = y;
+        }
+
+        curve.setAttribute(
+          "d",
+          curve
+            .getAttribute("d")
+            .replace(/Q (\d+(\.\d+)?) (\d+(\.\d+)?)/, `Q ${point.x} ${point.y}`)
+        );
+        console.log(curve.getAttribute("d"));
+      }
+
+      // Llamar a la función con un valor de x e y nuevos
+      document.addEventListener("mousemove", (e) => {
+        updateCurve(e.clientX, e.clientY);
+      });
+    </script>
+  </body>
+</html>

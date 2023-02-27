@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Drag and Drop SVG</title>
+	<style>
+        body{
+            background-color: black;
+            color: #fff;
+        }
+		#svg-container {
+			position: relative;
+			width: 100%;
+			height: 500px;
+			border: 1px solid #000;
+			background-color: #fff;
+			overflow: hidden;
+		}
+        svg {
+            background-color: #1e1e1e;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #000;
+        }
+		#my-rect {
+			fill: rgb(12, 142, 255);
+			stroke: #000;
+			stroke-width: 2px;
+			cursor: move;
+		}
+	</style>
+</head>
+<body>
+	<div id="svg-container">
+		<svg id="my-svg" width="100%" height="100%" viewBox="0 0 100 100">
+			<rect id="my-rect" x="10" y="10" width="20" height="20" />
+		</svg>
+	</div>
+	<script>
+		const svg = document.querySelector('#my-svg');
+		const rect = document.querySelector('#my-rect');
+		let isDragging = false;
+		let offsetX = 0;
+		let offsetY = 0;
+		let posX = 0;
+		let posY = 0;
+		
+		function updateElementPosition(x, y) {
+			posX = x - offsetX;
+			posY = y - offsetY;
+			rect.setAttribute('x', posX);
+			rect.setAttribute('y', posY);
+			document.querySelector('#posXLabel').textContent = posX.toFixed(2);
+			document.querySelector('#posYLabel').textContent = posY.toFixed(2);
+		}
+		
+		rect.addEventListener('mousedown', function(e) {
+			isDragging = true;
+			offsetX = e.clientX - posX;
+			offsetY = e.clientY - posY;
+		});
+		
+		document.addEventListener('mouseup', function(e) {
+			isDragging = false;
+		});
+		
+		document.addEventListener('mousemove', function(e) {
+			if (isDragging) {
+				updateElementPosition(e.clientX, e.clientY);
+			}
+		});
+	</script>
+	<div>
+		<label>X:</label>
+		<span id="posXLabel">0</span>
+		<label>Y:</label>
+		<span id="posYLabel">0</span>
+	</div>
+</body>
+</html>

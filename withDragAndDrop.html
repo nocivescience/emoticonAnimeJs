@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Drag and Drop con SVG</title>
+	<style>
+		#my-svg {
+			position: absolute;
+			top: 100px;
+			left: 100px;
+			width: 100px;
+			height: 100px;
+			fill: red;
+			cursor: move;
+		}
+	</style>
+</head>
+<body>
+	<svg id="my-svg" viewBox="0 0 100 100">
+		<rect x="0" y="0" width="100" height="100" />
+	</svg>
+
+	<script>
+		const svg = document.getElementById("my-svg");
+
+		let offsetX, offsetY;
+		let dragging = false;
+
+		svg.addEventListener("mousedown", startDrag);
+		document.addEventListener("mousemove", drag);
+		document.addEventListener("mouseup", endDrag);
+
+		function startDrag(event) {
+			// Obtener las coordenadas del rectángulo que rodea al SVG
+			const svgRect = svg.getBoundingClientRect();
+            console.log(svgRect);
+			// Calcular el desplazamiento del mouse dentro del SVG
+			offsetX = event.clientX - svgRect.left;
+			offsetY = event.clientY - svgRect.top;
+
+			// Marcar el SVG como "en arrastre"
+			dragging = true;
+		}
+
+		function drag(event) {
+			// Si el SVG está en arrastre, actualizar su posición
+			if (dragging) {
+				// Obtener la posición actual del mouse
+				const x = event.clientX;
+				const y = event.clientY;
+
+				// Calcular la nueva posición del SVG en base a su desplazamiento
+				const newX = x - offsetX;
+				const newY = y - offsetY;
+
+				// Actualizar la posición del SVG
+				svg.style.left = newX + "px";
+				svg.style.top = newY + "px";
+			}
+		}
+
+		function endDrag(event) {
+			// Marcar el SVG como "no en arrastre"
+			dragging = false;
+		}
+	</script>
+</body>
+</html>

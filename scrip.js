@@ -28,7 +28,31 @@ function updateCurve(x,y){
     controlPoint.setAttribute('cy',point.y)
     curve.setAttribute('d',curve.getAttribute('d').replace(/Q (\d+(\.\d+)?) (\d+(\.\d+)?)/,`Q ${point.x} ${point.y}`))
 }
-function onMouseDown(e){
-    updateCurve(e.clientX,e.clientY)
+function onMouseDown(){
+    isMouseDown=true
 }
-document.addEventListener('mousedown',onMouseDown)
+function onMouseMove(ev){
+    if(isMouseDown){
+        updateCurve(ev.clientX,ev.clientY)
+    }
+}
+function onMouseUp(){
+    isMouseDown=false
+    anime({
+        targets:point,
+        x:95,
+        y:80,
+        duration:1000,
+        elasticity:500,
+        update:function(){
+            updateCurve()
+        }
+    })
+}
+controlPoint.addEventListener('mousedown',onMouseDown)
+controlPoint.addEventListener('touchstart',onMouseDown)
+document.addEventListener('mousemove',onMouseMove)
+document.addEventListener('touchmove',onMouseMove)
+document.addEventListener('mouseup',onMouseUp)
+document.addEventListener('touchend',onMouseUp)
+updateCurve()
